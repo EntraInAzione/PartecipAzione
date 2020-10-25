@@ -1,7 +1,7 @@
 # [WIP] PartecipAzione
 
-<img src="organization/logo/1/EntrainAzione.png" alt="Azione Logo" width="300" />
-<img src="https://cdn.rawgit.com/decidim/decidim/master/logo.svg" alt="Decidim Logo" width=300" />
+<img src="organization/logo/1/EntrainAzione.png" alt="Azione Logo" width="250" />
+<img src="https://cdn.rawgit.com/decidim/decidim/master/logo.svg" alt="Decidim Logo" width=200" />
 
 Questa repository contiene il codice dell'immagine Docker su cui si basa l'istanza della piattaforma partecipativa di Azione Decidim, `PartecipAzione`.
 
