@@ -1,0 +1,124 @@
+version: '3.7'
+
+x-env: &env production
+x-decidim: &decidim 0.22.0
+x-ruby: &ruby 
+  RUBY_VERSION: 2.6.6
+x-pg-env: &pg-env
+  POSTGRES_USER: &pg-user postgres
+  POSTGRES_PASSWORD:
+  POSTGRES_DB: &pg-db azione-decidim_production
+  POSTGRES_HOST_AUTH_METHOD: trust
+
+x-admin: &admin
+  ADMIN_EMAIL: decidim@azione.it
+  ADMIN_PASSWORD: azione
+x-org: &org
+  ORG_NAME: PartecipAzione
+  ORG_HOST: &org_host partecip.azione.it
+
+services:
+  decidim:
+    container_name: decidim
+    hostname: decidim-host
+    image: *pg-db
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        decidim_version: *decidim
+    # ports:
+    #   - 3000:3000
+    volumes:
+      - decidim-gems:/usr/local/bundle:delegated
+      - decidim-uploads://home/decidim/azione-decidim/public/uploads
+      - decidim-config:/home/decidim/azione-decidim/config
+    environment:
+      PORT: 3000
+      DATABASE_HOST: pg
+      DATABASE_USERNAME: *pg-user
+      DATABASE_NAME: *pg-db
+      RAILS_ENV: *env
+      REDIS_URL: redis://redis:6379
+      DATABASE_URL: postgres://postgres@pg:5432/azione-decidim_production
+      RAILS_SERVE_STATIC_FILES: "true"
+      <<: [*ruby, *admin, *org]
+    depends_on:
+      - pg
+      - redis
+    links:
+      - pg
+      - redis
+    networks:
+      decidim:
+
+  pg:
+    image: postgres
+    container_name: pg
+    ports:
+      - 5432:5432
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      <<: *pg-env
+    networks:
+      decidim:
+
+  redis:
+    container_name: redis_decidim
+    image: redis
+    ports:
+      - 6379:6379
+    environment:
+      GMAIL_USER: patrickjusic96@gmail.com
+      GMAIL_PASSWORD: SsgvCcn9Mm]bdycZ-5d/8etb;Aed,m
+    volumes:
+      - redis-data:/data
+    networks:
+      decidim:
+
+  mailer:
+    image: namshi/smtp
+    container_name: mailer
+    restart: always
+    ports:
+      - 25:25
+    networks:
+      - decidim
+      
+  nginx:
+    image: bunkerity/bunkerized-nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      # GENERATE_SELF_SIGNED_SSL: "yes"
+      # AUTO_LETS_ENCRYPT: "yes" 
+      # REDIRECT_HTTP_TO_HTTPS: "yes"
+      SERVER_NAME: *org_host
+      DISABLE_DEFAULT_SERVER: "yes"
+      ALLOWED_METHODS: "GET|POST|HEAD|OPTIONS|PUT|DELETE"
+      WRITE_ACCESS: "yes"
+      REFERRER_POLICY: "origin"
+      USE_CLAMAV_UPLOAD: "no"
+      USE_CLAMAV_SCAN: "no"
+      CLAMAV_SCAN_REMOVE: "no"
+      ADDITIONAL_MODULES: "ruby "
+    volumes:
+      - nginx-letsencrypt:/etc/letsencrypt
+      - ./server-confs:/server-confs
+    networks:
+      - decidim  
+
+volumes:
+  pg-data:
+  redis-data:
+  decidim-gems:
+  decidim-config:
+  decidim-uploads:
+  nginx-letsencrypt:
+
+networks:
+  decidim:
