@@ -30,6 +30,15 @@ Questa repository contiene l'infrastruttura di setup della piattaforma Decidim d
 È possibile lanciare la piattaforma in locale con il comando:
 > docker-compose up -d
 
+## Configurazione
+
+La configurazione di default dell'immagine Docker include la creazione di un utente admin, in carica della creazione delle organizzazioni della piattaforma, e dell'organizazione PartecipAzione, di default. Quindi dopo aver lanciato l'infratstruttua è già possibile visitare la piattaforma. In caso contrario, Decidim reindirizzerebbe sempre alla configurazione di sistema su `/system`, dove l'admin deve effettuare l'accesso e creare la prima organizzazione. 
+
+In questo caso questo passaggio è già eseguito, ma per far si che decidim rilevi la richiesta da parte dell'host corretto, bisogna far si che la chiamata arrivi proprio da `partecip.azione.it`. Per poter camuffare la richiesta bisogna forzare tale host con l'indirizzo ip locale. Per fare ciò aggiungere `localhost partecip.azione.it` al fine `/etc/hosts` o più semplicemente lanciare
+> sudo echo "localhost partecip.azione.it" >> /etc/hosts
+
+A questo punto è possibile aprire il browser e visitando partecip.azione.it dovreste vedere la schermata home.
+
 ## Contributi
 
 Per contribuire allo sviluppo o alla gestione della piattaforma contattarmi al seguente indirizzo email: `patrick.jusic@protonmail.com`
