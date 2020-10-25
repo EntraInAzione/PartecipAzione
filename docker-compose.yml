@@ -17,6 +17,10 @@ x-org: &org
   ORG_NAME: PartecipAzione
   ORG_HOST: &org_host partecip.azione.it
 
+x-network: &network
+  networks:
+    decidim:
+
 services:
   decidim:
     container_name: decidim
@@ -27,8 +31,6 @@ services:
       dockerfile: Dockerfile
       args:
         decidim_version: *decidim
-    # ports:
-    #   - 3000:3000
     volumes:
       - decidim-gems:/usr/local/bundle:delegated
       - decidim-uploads://home/decidim/azione-decidim/public/uploads
@@ -46,45 +48,36 @@ services:
     depends_on:
       - pg
       - redis
+      - nginx
     links:
       - pg
       - redis
-    networks:
-      decidim:
+    <<: *network
 
   pg:
     image: postgres
     container_name: pg
-    ports:
-      - 5432:5432
     volumes:
       - pg-data:/var/lib/postgresql/data
     environment:
       <<: *pg-env
-    networks:
-      decidim:
+    <<: *network
 
   redis:
     container_name: redis_decidim
     image: redis
-    ports:
-      - 6379:6379
     environment:
       GMAIL_USER: patrickjusic96@gmail.com
       GMAIL_PASSWORD: SsgvCcn9Mm]bdycZ-5d/8etb;Aed,m
     volumes:
       - redis-data:/data
-    networks:
-      decidim:
+    <<: *network
 
   mailer:
     image: namshi/smtp
     container_name: mailer
     restart: always
-    ports:
-      - 25:25
-    networks:
-      - decidim
+    <<: *network
       
   nginx:
     image: bunkerity/bunkerized-nginx
@@ -109,8 +102,7 @@ services:
     volumes:
       - nginx-letsencrypt:/etc/letsencrypt
       - ./server-confs:/server-confs
-    networks:
-      - decidim  
+    <<: *network 
 
 volumes:
   pg-data:
