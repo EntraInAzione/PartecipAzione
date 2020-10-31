@@ -37,27 +37,20 @@ FROM base
 USER decidim
 WORKDIR /home/decidim
 
-ARG decidim_version
+ENV DECIDIM_VERSION=0.22.0
 
-RUN gem install decidim:$decidim_version
+RUN gem install decidim:$DECIDIM_VERSION
 RUN decidim azione-decidim
 
 WORKDIR /home/decidim/azione-decidim
 
 RUN echo "gem 'omniauth-cas'" >> Gemfile && echo "gem 'omniauth-facebook'" >> Gemfile && echo "gem 'omniauth-google-oauth2'" >> Gemfile &&             \ 
   echo "gem 'omniauth-twitter'" >> Gemfile && echo "gem 'figaro'" >> Gemfile && echo "gem 'daemons'" >> Gemfile && echo "gem 'whenever'" >> Gemfile && \
-  echo "gem 'delayed_job_active_record'" >> Gemfile && echo "gem 'wkhtmltopdf-binary'" >> Gemfile && echo "gem 'wicked_pdf'" >> Gemfile &&             \
+  echo "gem 'delayed_job_active_record'" >> Gemfile && echo "gem 'wkhtmltopdf-binary'" >> Gemfile && echo "gem 'wicked_pdf', '~> 1.4'" >> Gemfile &&             \
   bundle install
 
-RUN echo "gem 'decidim-consultations'" >> Gemfile && echo "gem 'decidim-initiatives'" >> Gemfile && \
+RUN echo "gem 'decidim-consultations', '$DECIDIM_VERSION'" >> Gemfile && echo "gem 'decidim-initiatives', '$DECIDIM_VERSION'" >> Gemfile && \
   bundle install
-
-RUN sed -i 's/config\.application_name = "My Application Name"/config.application_name = "PartecipAzione"/g' ./config/initializers/decidim.rb
-RUN sed -i 's/config\.mailer_sender = "change-me\@domain\.org"/config.mailer_sender = "decidim@azione.it"/g' ./config/initializers/decidim.rb
-RUN sed -i 's/config\.available_locales \= \[\:en\, \:ca\, \:es\]/config\.available_locales \= \[\:en\, \:es\, \:it\]/g' ./config/initializers/decidim.rb
-RUN sed -i 's/config\.default_locale = \:en/config\.default_locale = \:it/g' ./config/initializers/decidim.rb
-RUN sed -i 's/# config\.force_ssl \= true/config\.force_ssl \= false/g' ./config/initializers/decidim.rb
-RUN sed -i 's/# config\.force_ssl \= true/config\.force_ssl \= false/g' ./config/environments/production.rb
 
 COPY ./scripts/entrypoint.sh .
 COPY ./organization/ ./public/uploads/decidim/
