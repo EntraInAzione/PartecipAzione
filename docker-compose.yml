@@ -66,9 +66,6 @@ services:
   redis:
     container_name: redis_decidim
     image: redis
-    environment:
-      GMAIL_USER: patrickjusic96@gmail.com
-      GMAIL_PASSWORD: SsgvCcn9Mm]bdycZ-5d/8etb;Aed,m
     volumes:
       - redis-data:/data
     <<: *network
@@ -98,7 +95,8 @@ services:
       USE_CLAMAV_UPLOAD: "no"
       USE_CLAMAV_SCAN: "no"
       CLAMAV_SCAN_REMOVE: "no"
-      ADDITIONAL_MODULES: "ruby "
+      ADDITIONAL_MODULES: "ruby"
+      USE_MODSECURITY_CRS: "no"
     volumes:
       - nginx-letsencrypt:/etc/letsencrypt
       - ./server-confs:/server-confs
