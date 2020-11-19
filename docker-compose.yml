@@ -41,7 +41,6 @@ services:
       - decidim-gems:/usr/local/bundle:delegated
       - decidim-uploads://home/decidim/azione-decidim/public/uploads
       - decidim-config:/home/decidim/azione-decidim/config
-      - ./scripts/entrypoint.sh:/home/decidim/entrypoint.sh
     environment:
       PORT: 3000
       DATABASE_HOST: pg
@@ -99,7 +98,9 @@ services:
       # GENERATE_SELF_SIGNED_SSL: "yes"
       # AUTO_LETS_ENCRYPT: "yes" 
       # REDIRECT_HTTP_TO_HTTPS: "yes"
-      SERVER_NAME: *org_host
+
+      # SERVER_NAME: *org_host
+      SERVER_NAME: partecip.azione.it
       DISABLE_DEFAULT_SERVER: "yes"
       ALLOWED_METHODS: "GET|POST|HEAD|OPTIONS|PUT|DELETE"
       WRITE_ACCESS: "yes"
