@@ -92,8 +92,8 @@ services:
     container_name: nginx
     restart: always
     ports:
-      - 80:80
-      - 443:443
+      - 80:8080
+      - 443:8443
     environment:
       # GENERATE_SELF_SIGNED_SSL: "yes"
       # AUTO_LETS_ENCRYPT: "yes" 
