@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # encoding: utf-8
 
 RAILS_ENV=${RAILS_ENV:-"production"}
