@@ -14,8 +14,16 @@ x-admin: &admin
   ADMIN_EMAIL: decidim@azione.it
   ADMIN_PASSWORD: azione
 x-org: &org
-  ORG_NAME: PartecipAzione
+  ORG_NAME: &org_name PartecipAzione
   ORG_HOST: &org_host partecip.azione.it
+  ORG_ADMIN: &org_admin patrickjusic96@gmail.com
+
+x-smtp: &smtp
+  SMTP_HOST: &smtp_host in-v3.mailjet.com 
+  SMTP_PORT: 25
+  SMTP_DOMAIN: &smtp_domain mailjet
+  SMTP_USERNAME: 657288d8a677f13ab927ac92562fb967
+  SMTP_PASSWORD: 2f8bfff90441f4123af9eed6c3587f33
 
 x-network: &network
   networks:
@@ -29,12 +37,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        decidim_version: *decidim
     volumes:
       - decidim-gems:/usr/local/bundle:delegated
       - decidim-uploads://home/decidim/azione-decidim/public/uploads
       - decidim-config:/home/decidim/azione-decidim/config
+      - ./scripts/entrypoint.sh:/home/decidim/entrypoint.sh
     environment:
       PORT: 3000
       DATABASE_HOST: pg
@@ -44,7 +51,12 @@ services:
       REDIS_URL: redis://redis:6379
       DATABASE_URL: postgres://postgres@pg:5432/azione-decidim_production
       RAILS_SERVE_STATIC_FILES: "true"
-      <<: [*ruby, *admin, *org]
+      SECRETKEY: secret
+      SECRET_KEY_BASE: secret
+      SMTP_DOMAIN: *smtp_host
+      DECIDIM_VERSION: *decidim
+      # RAILS_LOG_TO_STDOUT: true
+      <<: [*ruby, *admin, *org, *smtp]
     depends_on:
       - pg
       - redis
