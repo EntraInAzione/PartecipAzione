@@ -1,7 +1,7 @@
 version: '3.7'
 
 x-env: &env production
-x-decidim: &decidim 0.22.0
+x-decidim: &decidim 0.23.1
 x-ruby: &ruby 
   RUBY_VERSION: 2.6.6
 x-pg-env: &pg-env
@@ -11,8 +11,8 @@ x-pg-env: &pg-env
   POSTGRES_HOST_AUTH_METHOD: trust
 
 x-admin: &admin
-  ADMIN_EMAIL: decidim@azione.it
-  ADMIN_PASSWORD: azione
+  ADMIN_EMAIL: &admin_email patrick.jusic@uspace.it
+  ADMIN_PASSWORD: azione_decidim
 x-org: &org
   ORG_NAME: &org_name PartecipAzione
   ORG_HOST: &org_host partecip.azione.it
