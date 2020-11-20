@@ -37,7 +37,7 @@ FROM base
 USER decidim
 WORKDIR /home/decidim
 
-ENV DECIDIM_VERSION=0.22.0
+ENV DECIDIM_VERSION=${DECIDIM_VERSION:-0.23.1}
 
 RUN gem install decidim:$DECIDIM_VERSION
 RUN decidim azione-decidim
