@@ -50,7 +50,7 @@ RUN echo "gem 'omniauth-cas'" >> Gemfile && echo "gem 'omniauth-facebook'" >> Ge
   bundle install
 
 RUN echo "gem 'decidim-consultations', '$DECIDIM_VERSION'" >> Gemfile && echo "gem 'decidim-initiatives', '$DECIDIM_VERSION'" >> Gemfile && \
-  bundle install
+  echo "gem 'decidim-direct_verifications'" >> Gemfile && bundle install
 
 COPY ./scripts/entrypoint.sh .
 COPY ./organization/ ./public/uploads/decidim/
