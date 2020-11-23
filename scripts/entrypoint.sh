@@ -26,8 +26,8 @@ RAILS_ENV=${RAILS_ENV} bin/rails decidim:upgrade
 echo "------------------------------------"
 echo "---- Update config -----------------"
 echo "------------------------------------"
-sed -i "s/config\.application_name = 'My Application Name'/config.application_name = '$ORG_NAME'/g" ./config/initializers/decidim.rb
-sed -i "s/config\.mailer_sender = 'change-me\@domain\.org'/config.mailer_sender = '$ADMIN_EMAIL'/g" ./config/initializers/decidim.rb
+sed -i "s/config\.application_name = \"My Application Name\"/config.application_name = \"$ORG_NAME\"/g" ./config/initializers/decidim.rb
+sed -i "s/config\.mailer_sender = \"change-me\@domain\.org\"/config.mailer_sender = \"$ADMIN_EMAIL\"/g" ./config/initializers/decidim.rb
 sed -i "s/config\.available_locales \= \[\:en\, \:ca\, \:es\]/config\.available_locales \= \[\:en\, \:es\, \:it\]/g" ./config/initializers/decidim.rb
 sed -i "s/config\.default_locale = \:en/config\.default_locale = \:it/g" ./config/initializers/decidim.rb
 sed -i "s/# config\.force_ssl \= true/config\.force_ssl \= false/g" ./config/initializers/decidim.rb
