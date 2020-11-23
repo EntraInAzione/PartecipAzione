@@ -19,7 +19,7 @@ SMTP_PASSWORD=${SMTP_PASSWORD:-""}
 echo "------------------------------------"
 echo "---- Run cron ----------------------"
 echo "------------------------------------"
-RAILS_ENV=${RAILS_ENV} bundle exec whenever --update-crontab
+RAILS_ENV=${RAILS_ENV} bundle exec whenever --update-crontab .
 
 RAILS_ENV=${RAILS_ENV} bin/rails decidim:upgrade
 

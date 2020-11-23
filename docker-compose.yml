@@ -21,8 +21,8 @@ x-org: &org
 x-smtp: &smtp
   SMTP_HOST: &smtp_host in-v3.mailjet.com 
   SMTP_PORT: 25
-  SMTP_DOMAIN: *smtp_host
-  SMTP_ADDRESS: &smtp_host
+  SMTP_DOMAIN: uspace.it
+  SMTP_ADDRESS: *smtp_host
   SMTP_USERNAME: 657288d8a677f13ab927ac92562fb967
   SMTP_PASSWORD: 2f8bfff90441f4123af9eed6c3587f33
 
