@@ -21,7 +21,8 @@ x-org: &org
 x-smtp: &smtp
   SMTP_HOST: &smtp_host in-v3.mailjet.com 
   SMTP_PORT: 25
-  SMTP_DOMAIN: &smtp_domain mailjet
+  SMTP_DOMAIN: *smtp_host
+  SMTP_ADDRESS: &smtp_host
   SMTP_USERNAME: 657288d8a677f13ab927ac92562fb967
   SMTP_PASSWORD: 2f8bfff90441f4123af9eed6c3587f33
 
@@ -52,7 +53,6 @@ services:
       RAILS_SERVE_STATIC_FILES: "true"
       SECRETKEY: secret
       SECRET_KEY_BASE: secret
-      SMTP_DOMAIN: *smtp_host
       DECIDIM_VERSION: *decidim
       # RAILS_LOG_TO_STDOUT: true
       <<: [*ruby, *admin, *org, *smtp]
@@ -69,7 +69,7 @@ services:
     image: postgres
     container_name: pg
     volumes:
-      - pg-data:/var/lib/postgresql/data
+      - pg:/var/lib/postgresql/data
     environment:
       <<: *pg-env
     <<: *network
@@ -78,7 +78,7 @@ services:
     container_name: redis_decidim
     image: redis
     volumes:
-      - redis-data:/data
+      - redis:/data
     <<: *network
 
   mailer:
@@ -116,8 +116,8 @@ services:
     <<: *network 
 
 volumes:
-  pg-data:
-  redis-data:
+  pg:
+  redis:
   decidim-gems:
   decidim-config:
   decidim-uploads:
