@@ -44,13 +44,30 @@ RUN decidim azione-decidim
 
 WORKDIR /home/decidim/azione-decidim
 
-RUN echo "gem 'omniauth-cas'" >> Gemfile && echo "gem 'omniauth-facebook'" >> Gemfile && echo "gem 'omniauth-google-oauth2'" >> Gemfile &&             \ 
-  echo "gem 'omniauth-twitter'" >> Gemfile && echo "gem 'figaro'" >> Gemfile && echo "gem 'daemons'" >> Gemfile && echo "gem 'whenever'" >> Gemfile && \
-  echo "gem 'delayed_job_active_record'" >> Gemfile && echo "gem 'wkhtmltopdf-binary'" >> Gemfile && echo "gem 'wicked_pdf', '~> 1.4'" >> Gemfile &&             \
-  bundle install
+# install required dependencies
+RUN echo "gem 'omniauth-cas'\n\
+  gem 'omniauth-facebook'\n\
+  gem 'omniauth-google-oauth2'\n\
+  gem 'omniauth-twitter'\n\
+  gem 'figaro'\n\
+  gem 'daemons'\n\
+  gem 'whenever'\n\
+  gem 'delayed_job_active_record'\n\
+  gem 'wkhtmltopdf-binary'\n\
+  gem 'wicked_pdf', '~> 1.4'\n\
+  " >> Gemfile && bundle install
 
-RUN echo "gem 'decidim-consultations', '$DECIDIM_VERSION'" >> Gemfile && echo "gem 'decidim-initiatives', '$DECIDIM_VERSION'" >> Gemfile && \
-  echo "gem 'decidim-direct_verifications'" >> Gemfile && bundle install
+# install extra decidim modules
+RUN echo "gem 'decidim-consultations', '$DECIDIM_VERSION'\n \
+  gem 'decidim-initiatives', '$DECIDIM_VERSION'\n \
+  gem 'decidim-blogs', '$DECIDIM_VERSION'\n \
+  gem 'decidim-assemblies', '$DECIDIM_VERSION'\n \
+  gem 'decidim-direct_verifications'\n\
+  " >> Gemfile && bundle install
+
+# decidim-decidim_awesome currently incompatible
+# gem 'decidim-decidim_awesome', '~> 0.5.1'\n \
+# gem 'decidim-term_customizer', git: 'https://github.com/mainio/decidim-module-term_customizer.git'" 
 
 COPY ./scripts/entrypoint.sh .
 COPY ./organization/ ./public/uploads/decidim/
@@ -62,5 +79,7 @@ RUN RAILS_ENV=${RAILS_ENV} bin/rails assets:precompile
 RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim:install:migrations
 RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_initiatives:install:migrations
 RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_consultations:install:migrations
+# RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_decidim_awesome:install:migrations
+# RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_term_customizer:install:migrations
 
 ENTRYPOINT ["./entrypoint.sh"]
