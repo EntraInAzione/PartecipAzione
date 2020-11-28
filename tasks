@@ -1,0 +1,92 @@
+rails about                                               # List versions of all Rails frameworks and the environment
+rails active_storage:install                              # Copy over the migration needed to the application
+rails app:template                                        # Applies the template supplied by LOCATION=(/path/to/template) or URL
+rails app:update                                          # Update configs and some other initially generated files (or use just update:configs or update:bin)
+rails assets:clean[keep]                                  # Remove old compiled assets
+rails assets:clobber                                      # Remove compiled assets
+rails assets:environment                                  # Load asset compile environment
+rails assets:precompile                                   # Compile all the assets named in config.assets.precompile
+rails autoprefixer:info                                   # Show selected browsers and prefixed CSS properties and values
+rails cache_digests:dependencies                          # Lookup first-level dependencies for TEMPLATE (like messages/show or comments/_comment.html)
+rails cache_digests:nested_dependencies                   # Lookup nested dependencies for TEMPLATE (like messages/show or comments/_comment.html)
+rails db:create                                           # Creates the database from DATABASE_URL or config/database.yml for the current RAILS_ENV (use db:create:all to create all databases in the config)....
+rails db:drop                                             # Drops the database from DATABASE_URL or config/database.yml for the current RAILS_ENV (use db:drop:all to drop all databases in the config). Witho...
+rails db:environment:set                                  # Set the environment value for the database
+rails db:fixtures:load                                    # Loads fixtures into the current environment's database
+rails db:migrate                                          # Migrate the database (options: VERSION=x, VERBOSE=false, SCOPE=blog)
+rails db:migrate:status                                   # Display status of migrations
+rails db:rollback                                         # Rolls the schema back to the previous version (specify steps w/ STEP=n)
+rails db:schema:cache:clear                               # Clears a db/schema_cache.yml file
+rails db:schema:cache:dump                                # Creates a db/schema_cache.yml file
+rails db:schema:dump                                      # Creates a db/schema.rb file that is portable against any DB supported by Active Record
+rails db:schema:load                                      # Loads a schema.rb file into the database
+rails db:seed                                             # Loads the seed data from db/seeds.rb
+rails db:setup                                            # Creates the database, loads the schema, and initializes with the seed data (use db:reset to also drop the database first)
+rails db:structure:dump                                   # Dumps the database structure to db/structure.sql
+rails db:structure:load                                   # Recreates the databases from the structure.sql file
+rails db:version                                          # Retrieves the current schema version number
+rails decidim:check_users_newsletter_opt_in               # Check and notify users to update her newsletter notifications settings
+rails decidim:choose_target_plugins                       # Setup environment so that only decidim migrations are installed
+rails decidim:delete_data_portability_files               # Deletes all data portability files previous to `Decidim.data_portability_expiry_time` from now
+rails decidim:install:migrations                          # Copy migrations from decidim to application
+rails decidim:locales:rebuild_search                      # Rebuild the search index
+rails decidim:locales:sync_all                            # Ensures locales in organizations are in sync with Decidim initializer
+rails decidim:metrics:all[day]                            # Execute all metrics calculation methods
+rails decidim:metrics:list                                # Show available metrics
+rails decidim:metrics:one[metric,day]                     # Execute one metric calculation method
+rails decidim:metrics:rebuild[metric,day]                 # Rebuild calculations from specific day
+rails decidim:open_data:export                            # Generates the Open Data export files for each organization
+rails decidim:right_to_be_forgotten                       # Deletes User records by ID using a CSV file
+rails decidim:upgrade                                     # Install migrations from Decidim to the app
+rails decidim_accountability:install:migrations           # Copy migrations from decidim_accountability to application
+rails decidim_admin:install:migrations                    # Copy migrations from decidim_admin to application
+rails decidim_assemblies:install:migrations               # Copy migrations from decidim_assemblies to application
+rails decidim_blogs:install:migrations                    # Copy migrations from decidim_blogs to application
+rails decidim_budgets:install:migrations                  # Copy migrations from decidim_budgets to application
+rails decidim_comments:install:migrations                 # Copy migrations from decidim_comments to application
+rails decidim_consultations:install:migrations            # Copy migrations from decidim_consultations to application
+rails decidim_debates:install:migrations                  # Copy migrations from decidim_debates to application
+rails decidim_elections:generate_identification_keys      # Add a new client to the bulletin board
+rails decidim_elections:install:migrations                # Copy migrations from decidim_elections to application
+rails decidim_forms:install:migrations                    # Copy migrations from decidim_forms to application
+rails decidim_initiatives:check_published                 # Check published initiatives and moves to accepted/rejected state depending on the votes collected when the signing period has finished
+rails decidim_initiatives:check_validating                # Check validating initiatives and moves all without changes for a configured time to discarded state
+rails decidim_initiatives:install:migrations              # Copy migrations from decidim_initiatives to application
+rails decidim_initiatives:notify_progress                 # Notify progress on published initiatives
+rails decidim_meetings:clean_registration_forms[months]   # Remove registration forms belonging to meetings that have ended more than X months ago
+rails decidim_meetings:install:migrations                 # Copy migrations from decidim_meetings to application
+rails decidim_pages:install:migrations                    # Copy migrations from decidim_pages to application
+rails decidim_participatory_processes:install:migrations  # Copy migrations from decidim_participatory_processes to application
+rails decidim_proposals:install:migrations                # Copy migrations from decidim_proposals to application
+rails decidim_sortitions:install:migrations               # Copy migrations from decidim_sortitions to application
+rails decidim_surveys:install:migrations                  # Copy migrations from decidim_surveys to application
+rails decidim_surveys:migrate_data_to_decidim_forms       # Migrate data from decidim_surveys tables to decidim_forms tables
+rails decidim_system:install:migrations                   # Copy migrations from decidim_system to application
+rails decidim_verifications:install:migrations            # Copy migrations from decidim_verifications to application
+rails dev:cache                                           # Toggle development mode caching on/off
+rails geocode:all                                         # Geocode all objects without coordinates
+rails geocoder:maxmind:geolite:download                   # Download MaxMind GeoLite City data
+rails geocoder:maxmind:geolite:extract                    # Extract (unzip) MaxMind GeoLite City data
+rails geocoder:maxmind:geolite:insert                     # Load/refresh MaxMind GeoLite City data
+rails geocoder:maxmind:geolite:load                       # Download and load/refresh MaxMind GeoLite City data
+rails initializers                                        # Print out all defined initializers in the order they are invoked by Rails
+rails jobs:check[max_age]                                 # Exit with error status if any jobs older than max_age seconds haven't been attempted yet
+rails jobs:clear                                          # Clear the delayed_job queue
+rails jobs:work                                           # Start a delayed_job worker
+rails jobs:workoff                                        # Start a delayed_job worker and exit when all available jobs are complete
+rails log:clear                                           # Truncates all/specified *.log files in log/ to zero bytes (specify which logs with LOGS=test,development)
+rails middleware                                          # Prints out your Rack middleware stack
+rails notes                                               # Enumerate all annotations (use notes:optimize, :fixme, :todo for focus)
+rails notes:custom                                        # Enumerate a custom annotation, specify with ANNOTATION=CUSTOM
+rails restart                                             # Restart app by touching tmp/restart.txt
+rails routes                                              # Print out all defined routes in match order, with names
+rails secret                                              # Generate a cryptographically secure secret key (this is typically used to generate a secret for cookie sessions)
+rails stats                                               # Report code statistics (KLOCs, etc) from the application or engine
+rails test                                                # Runs all tests in test folder except system ones
+rails test:cells                                          # Run tests for cells
+rails test:db                                             # Run tests quickly, but also reset db
+rails test:system                                         # Run system tests only
+rails time:zones[country_or_offset]                       # List all time zones, list by two-letter country code (`rails time:zones[US]`), or list by UTC offset (`rails time:zones[-8]`)
+rails tmp:clear                                           # Clear cache, socket and screenshot files from tmp/ (narrow w/ tmp:cache:clear, tmp:sockets:clear, tmp:screenshots:clear)
+rails tmp:create                                          # Creates tmp directories for cache, sockets, and pids
+rails yarn:install                                        # Install all JavaScript dependencies as specified via Yarn
