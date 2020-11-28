@@ -113,6 +113,7 @@ services:
     volumes:
       - nginx-letsencrypt:/etc/letsencrypt
       - ./server-confs:/server-confs
+      - ./http-confs:/http-confs
     <<: *network 
 
 volumes:
