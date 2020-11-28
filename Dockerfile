@@ -62,10 +62,18 @@ RUN echo "gem 'decidim-consultations', '$DECIDIM_VERSION'\n \
   gem 'decidim-initiatives', '$DECIDIM_VERSION'\n \
   gem 'decidim-blogs', '$DECIDIM_VERSION'\n \
   gem 'decidim-assemblies', '$DECIDIM_VERSION'\n \
+  gem 'decidim-budgets', '$DECIDIM_VERSION'\n \
+  gem 'decidim-comments', '$DECIDIM_VERSION'\n \
+  gem 'decidim-debates', '$DECIDIM_VERSION'\n \
+  gem 'decidim-elections', '$DECIDIM_VERSION'\n \
+  gem 'decidim-meetings', '$DECIDIM_VERSION'\n \
+  gem 'decidim-proposals', '$DECIDIM_VERSION'\n \
+  gem 'decidim-sortitions', '$DECIDIM_VERSION'\n \
+  gem 'decidim-surveys', '$DECIDIM_VERSION'\n \
   gem 'decidim-direct_verifications'\n\
   " >> Gemfile && bundle install
 
-# decidim-decidim_awesome currently incompatible
+# currently incompatible modules
 # gem 'decidim-decidim_awesome', '~> 0.5.1'\n \
 # gem 'decidim-term_customizer', git: 'https://github.com/mainio/decidim-module-term_customizer.git'" 
 
@@ -79,6 +87,7 @@ RUN RAILS_ENV=${RAILS_ENV} bin/rails assets:precompile
 RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim:install:migrations
 RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_initiatives:install:migrations
 RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_consultations:install:migrations
+RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_sortitions:install:migrations
 # RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_decidim_awesome:install:migrations
 # RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_term_customizer:install:migrations
 
