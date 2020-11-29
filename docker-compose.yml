@@ -123,3 +123,6 @@ volumes:
   decidim-config:
   decidim-uploads:
   nginx-letsencrypt:
+
+networks:
+  decidim:
