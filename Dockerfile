@@ -5,7 +5,11 @@ ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV DEBIAN_FRONTEND="noninteractive" TZ="Europe/Rome"
 
-RUN apt update && apt install -y vim nano git curl cron autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm-dev nodejs imagemagick libicu-dev libpq-dev ruby-dev locales
+RUN apt update && \
+  apt install -y vim nano git curl cron autoconf bison build-essential  \
+  libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev    \
+  libffi-dev libgdbm-dev nodejs imagemagick libicu-dev libpq-dev        \
+  ruby-dev locales postgresql-client
 
 RUN locale-gen en_US.UTF-8
 RUN dpkg-reconfigure locales
