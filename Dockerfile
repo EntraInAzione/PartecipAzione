@@ -10,7 +10,7 @@ RUN apt update && \
   apt install -y vim nano git curl cron autoconf bison build-essential  \
   libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev    \
   libffi-dev libgdbm-dev nodejs imagemagick libicu-dev libpq-dev wget   \
-  ruby-dev locales
+  ruby-dev locales lsb-release
 
 RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | tee  /etc/apt/sources.list.d/pgdg.list
