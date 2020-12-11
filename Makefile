@@ -24,6 +24,12 @@ decidim:
 decidim-logs:
 	$(DECIDIM) cat log/production.log
 
+decidim-live-logs:
+	$(DECIDIM) tail log/production.log -f
+
+decidim-logs-errors:
+	$(DECIDIM) grep ERROR log/production.log -A3 -B3
+
 # db management
 db-dump:
 	$(DECIDIM) ${DUMP} -h ${POSTGRES_HOST} -U ${POSTGRES_USER} ${POSTGRES_DB} > dump.psql
