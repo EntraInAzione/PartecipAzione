@@ -20,7 +20,7 @@ RUN locale-gen en_US.UTF-8
 RUN dpkg-reconfigure locales
 
 RUN useradd -ms /bin/bash decidim
-USER decidim
+# USER decidim
 ENV HOME /home/decidim
 
 RUN git clone https://github.com/rbenv/rbenv.git ~/.rbenv && \
@@ -43,7 +43,7 @@ RUN echo "gem: --no-document" > ~/.gemrc && \
 #########################################################################################
 FROM base
 
-USER decidim
+# USER decidim
 WORKDIR /home/decidim
 
 ENV DECIDIM_VERSION=${DECIDIM_VERSION:-0.23.1}
@@ -89,6 +89,12 @@ RUN echo "gem 'decidim-consultations', '$DECIDIM_VERSION'\n \
 COPY ./scripts/entrypoint.sh .
 COPY ./organization/ ./public/uploads/decidim/
 COPY ./schedule.rb ./config/schedule.rb
+
+RUN chown -R decidim:decidim .
+RUN chown decidim:decidim ./public/uploads
+
+USER decidim
+RUN mkdir ./public/uploads/tmp
 
 RUN RAILS_ENV=${RAILS_ENV} bin/rails generate delayed_job:active_record
 RUN RAILS_ENV=${RAILS_ENV} bin/rails generate wicked_pdf

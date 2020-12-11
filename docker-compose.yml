@@ -40,7 +40,6 @@ services:
       dockerfile: Dockerfile
     volumes:
       - decidim-gems:/usr/local/bundle:delegated
-      - decidim-uploads://home/decidim/azione-decidim/public/uploads
       - decidim-config:/home/decidim/azione-decidim/config
     environment:
       PORT: 3000
@@ -122,7 +121,6 @@ volumes:
   redis:
   decidim-gems:
   decidim-config:
-  decidim-uploads:
   nginx-letsencrypt:
 
 networks:
