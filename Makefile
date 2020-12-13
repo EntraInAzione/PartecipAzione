@@ -42,6 +42,9 @@ db-restore:
 db-migrate:
 	$(DECIDIM) rails db:migrate
 
+db-migrate-status:
+	$(DECIDIM) rails db:migrate:status
+
 db-wipe:
 	$(POSTGRES) "DROP SCHEMA public CASCADE;"
 	$(POSTGRES) "CREATE SCHEMA public;"
