@@ -109,7 +109,6 @@ services:
       CLAMAV_SCAN_REMOVE: "no"
       ADDITIONAL_MODULES: "ruby"
       USE_MODSECURITY_CRS: "no"
-      DNS_RESOLVERS: "127.0.0.11"
     volumes:
       - nginx-letsencrypt:/etc/letsencrypt
       - ./server-confs:/server-confs

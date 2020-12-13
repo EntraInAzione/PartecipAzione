@@ -80,10 +80,11 @@ RUN echo "gem 'decidim-consultations', '$DECIDIM_VERSION'\n \
   gem 'decidim-sortitions', '$DECIDIM_VERSION'\n \
   gem 'decidim-surveys', '$DECIDIM_VERSION'\n \
   gem 'decidim-direct_verifications'\n\
+  gem 'decidim-decidim_awesome', '~> 0.5.1'\n\
+  gem 'decidim-term_customizer', git: 'https://github.com/EntraInAzione/decidim-module-term_customizer.git'\n\
   " >> Gemfile && bundle install
 
 # currently incompatible modules
-# gem 'decidim-decidim_awesome', '~> 0.5.1'\n \
 # gem 'decidim-term_customizer', git: 'https://github.com/mainio/decidim-module-term_customizer.git'" 
 
 COPY ./scripts/entrypoint.sh .
@@ -103,7 +104,7 @@ RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim:install:migrations
 RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_initiatives:install:migrations
 RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_consultations:install:migrations
 RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_sortitions:install:migrations
-# RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_decidim_awesome:install:migrations
-# RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_term_customizer:install:migrations
+RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_decidim_awesome:install:migrations
+RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_term_customizer:install:migrations
 
 ENTRYPOINT ["./entrypoint.sh"]
