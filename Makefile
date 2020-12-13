@@ -31,6 +31,9 @@ decidim-logs-errors:
 	$(DECIDIM) grep ERROR log/production.log -A3 -B3
 
 # db management
+db:
+	@docker exec -ti ${POSTGRES_HOST} psql -h ${POSTGRES_HOST} -U ${POSTGRES_USER} ${POSTGRES_DB}
+
 db-dump:
 	$(DECIDIM) ${DUMP} -h ${POSTGRES_HOST} -U ${POSTGRES_USER} ${POSTGRES_DB} > dump.psql
 	@docker cp ${CONTAINER}:/home/decidim/azione-decidim/db/dump.psql ./backup/$(CURR_TIME).psql
