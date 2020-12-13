@@ -1,7 +1,7 @@
 version: '3.7'
 
 x-env: &env production
-x-decidim: &decidim 0.23.1
+x-decidim: &decidim 0.23.0
 x-ruby: &ruby 
   RUBY_VERSION: 2.6.6
 x-pg-env: &pg-env

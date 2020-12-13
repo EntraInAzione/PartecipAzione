@@ -46,7 +46,7 @@ FROM base
 # USER decidim
 WORKDIR /home/decidim
 
-ENV DECIDIM_VERSION=${DECIDIM_VERSION:-0.23.1}
+ENV DECIDIM_VERSION=${DECIDIM_VERSION:-0.23.0}
 
 RUN gem install decidim:$DECIDIM_VERSION
 RUN decidim azione-decidim
@@ -104,7 +104,7 @@ RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim:install:migrations
 RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_initiatives:install:migrations
 RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_consultations:install:migrations
 RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_sortitions:install:migrations
-RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_decidim_awesome:install:migrations
+# RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_decidim_awesome:install:migrations
 RUN RAILS_ENV=${RAILS_ENV} bin/rails decidim_term_customizer:install:migrations
 
 ENTRYPOINT ["./entrypoint.sh"]
