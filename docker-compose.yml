@@ -94,11 +94,8 @@ services:
       - 80:8080
       - 443:8443
     environment:
-      # GENERATE_SELF_SIGNED_SSL: "yes"
       # AUTO_LETS_ENCRYPT: "yes" 
       # REDIRECT_HTTP_TO_HTTPS: "yes"
-
-      # SERVER_NAME: *org_host
       SERVER_NAME: partecip.azione.it
       DISABLE_DEFAULT_SERVER: "yes"
       ALLOWED_METHODS: "GET|POST|HEAD|OPTIONS|PUT|DELETE"

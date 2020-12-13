@@ -80,11 +80,11 @@ RUN echo "gem 'decidim-consultations', '$DECIDIM_VERSION'\n \
   gem 'decidim-sortitions', '$DECIDIM_VERSION'\n \
   gem 'decidim-surveys', '$DECIDIM_VERSION'\n \
   gem 'decidim-direct_verifications'\n\
-  gem 'decidim-decidim_awesome', '~> 0.5.1'\n\
   gem 'decidim-term_customizer', git: 'https://github.com/EntraInAzione/decidim-module-term_customizer.git'\n\
   " >> Gemfile && bundle install
 
 # currently incompatible modules
+# gem 'decidim-decidim_awesome', '~> 0.5.1'\n\
 # gem 'decidim-term_customizer', git: 'https://github.com/mainio/decidim-module-term_customizer.git'" 
 
 COPY ./scripts/entrypoint.sh .
