@@ -12,10 +12,16 @@ POSTGRES := @docker exec -ti ${POSTGRES_HOST} psql -h ${POSTGRES_HOST} -U ${POST
 
 CURR_TIME := $(shell date +"%Y%m%d%H%M%S")
 
-default: decidim
+default: install up 
 
-tasks:
-	$(DECIDIM) rails --tasks
+install:
+	./scripts/install.sh
+
+up:
+	docker-compose up -d
+
+down: 
+	docker-compose down
 
 # decidim commands
 decidim:
@@ -29,6 +35,9 @@ decidim-live-logs:
 
 decidim-logs-errors:
 	$(DECIDIM) grep ERROR log/production.log -A3 -B3
+
+tasks:
+	$(DECIDIM) rails --tasks
 
 # db management
 db:
