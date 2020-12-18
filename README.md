@@ -32,6 +32,12 @@ Questa repository contiene l'infrastruttura di setup della piattaforma Decidim d
 
 ## Configurazione
 
+Questa repository contiene un Makefile con una serie di comandi utili per la gestione dell'applicazione. La configurazione su un nuovo server puo' essere rapidamente eseguita lanciando `make`. Make installera' le dipendenze richieste tra cui Docker e inizializzera' l'infrastruttura con `docker-compose up -d`.
+
+Tra i comandi utili da lanciare con make ci sono `decidim-logs` per stampare i logs di decidim, `decidim` per accedere al container in cui gira l'applicazione`, `db` per accedere al container in cui gira Postgres, `db-dump/restore` per fare un backup e fare il restore dello stato del database, `db-migrate-status` per mostrare lo stato delle migrazioni sul database
+
+## Sviluppo locale
+
 La configurazione di default dell'immagine Docker include la creazione di un utente admin, in carica della creazione delle organizzazioni della piattaforma, e dell'organizazione PartecipAzione, di default. Quindi dopo aver lanciato l'infratstruttua è già possibile visitare la piattaforma. In caso contrario, Decidim reindirizzerebbe sempre alla configurazione di sistema su `/system`, dove l'admin deve effettuare l'accesso e creare la prima organizzazione. 
 
 In questo caso questo passaggio è già eseguito, ma per far si che decidim rilevi la richiesta da parte dell'host corretto, bisogna far si che la chiamata arrivi proprio da `partecip.azione.it`. Per poter camuffare la richiesta bisogna forzare tale host con l'indirizzo ip locale. Per fare ciò aggiungere `localhost partecip.azione.it` al fine `/etc/hosts` o più semplicemente lanciare
