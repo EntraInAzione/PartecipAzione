@@ -1,3 +1,5 @@
+List of available task using: rake -T
+
 rails about                                               # List versions of all Rails frameworks and the environment
 rails active_storage:install                              # Copy over the migration needed to the application
 rails app:template                                        # Applies the template supplied by LOCATION=(/path/to/template) or URL

@@ -41,6 +41,7 @@ services:
     volumes:
       - decidim-gems:/usr/local/bundle:delegated
       - decidim-config:/home/decidim/azione-decidim/config
+      - decidim-uploads:/home/decidim/azione-decidim/public/uploads
     environment:
       PORT: 3000
       DATABASE_HOST: pg
@@ -117,6 +118,7 @@ volumes:
   redis:
   decidim-gems:
   decidim-config:
+  decidim-uploads:
   nginx-letsencrypt:
 
 networks:
