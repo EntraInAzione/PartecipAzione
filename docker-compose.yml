@@ -38,6 +38,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    ports:
+      - 3000:3000
     volumes:
       - decidim-gems:/usr/local/bundle:delegated
       - decidim-config:/home/decidim/azione-decidim/config
@@ -59,11 +61,16 @@ services:
     depends_on:
       - pg
       - redis
-      - nginx
+      - traefik
     links:
       - pg
       - redis
     <<: *network
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.decidim.rule=Host(`partecipazione.azione.it`)
+      - traefik.http.routers.decidim.tls=true
+      - traefik.http.routers.decidim.tls.certresolver=le
 
   pg:
     image: postgres
@@ -87,31 +94,94 @@ services:
     restart: always
     <<: *network
       
-  nginx:
-    image: bunkerity/bunkerized-nginx
-    container_name: nginx
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: always
+    volumes:
+      - grafana_lib:/var/lib/grafana
+      - ./config/grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=base_decidim
+    <<: *network
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.grafana.rule=Host(`grafana.partecipazione.azione.it`)
+      - traefik.http.routers.grafana.tls=true
+      - traefik.http.routers.grafana.tls.certresolver=le
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: always
+    volumes:
+      - prometheus_data:/prometheus
+      - prometheus_config:/fragments/
+      - ./config/prometheus/targets/prometheus.json:/etc/prometheus/targets/prometheus.json
+      - ./config/prometheus/targets/grafana.json:/etc/prometheus/targets/grafana.json
+      - ./config/prometheus/targets/traefik.json:/etc/prometheus/targets/traefik.json
+    command:
+      - "--config.file=/fragments/complete/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+    depends_on:
+      - config-concat
+    <<: *network
+    labels:
+      - traefik.enable=true
+      # - traefik.http.routers.prometheus.rule=Host(`prometheus.partecipa.baseitalia.net`)
+      # - traefik.http.routers.prometheus.tls=true
+      # - traefik.http.routers.prometheus.tls.certresolver=le
+
+  config-concat:
+    image: deanwilson/promconf-concat:0.1.0
+    container_name: config-concat
+    restart: always
+    volumes:
+      - prometheus_config:/fragments/
+      - ./config/prometheus/base_prometheus.yml:/base_prometheus.yml
+    <<: *network
+
+  traefik:
+    image: traefik
+    container_name: traefik
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesResolvers.le.acme.email=patrick.jusic@uspace.it"
+      - "--certificatesResolvers.le.acme.storage=acme.json"
+      - "--certificatesResolvers.le.acme.tlsChallenge=true"
+      - "--certificatesResolvers.le.acme.httpChallenge=true"
+      - "--certificatesResolvers.le.acme.httpChallenge.entryPoint=web"
+      # Metrics
+      - "--metrics.prometheus=true"
+      - "--metrics.prometheus.entryPoint=metrics"
+      - "--entryPoints.metrics.address=:8082"
     restart: always
     ports:
-      - 80:8080
-      - 443:8443
-    environment:
-      # AUTO_LETS_ENCRYPT: "yes" 
-      # REDIRECT_HTTP_TO_HTTPS: "yes"
-      SERVER_NAME: partecip.azione.it
-      DISABLE_DEFAULT_SERVER: "yes"
-      ALLOWED_METHODS: "GET|POST|HEAD|OPTIONS|PUT|DELETE"
-      WRITE_ACCESS: "yes"
-      REFERRER_POLICY: "origin"
-      USE_CLAMAV_UPLOAD: "no"
-      USE_CLAMAV_SCAN: "no"
-      CLAMAV_SCAN_REMOVE: "no"
-      ADDITIONAL_MODULES: "ruby"
-      USE_MODSECURITY_CRS: "no"
+      - 80:80
+      - 443:443
     volumes:
-      - nginx-letsencrypt:/etc/letsencrypt
-      - ./server-confs:/server-confs
-      - ./http-confs:/http-confs
-    <<: *network 
+        - /var/run/docker.sock:/var/run/docker.sock
+        - ./acme.json:/acme.json
+    labels:
+      - traefik.enable=true
+      # Redirect all HTTP to HTTPS permanently
+      - traefik.http.routers.http_catchall.rule=HostRegexp(`{any:.+}`)
+      - traefik.http.routers.http_catchall.entrypoints=web
+      - traefik.http.routers.http_catchall.middlewares=https_redirect
+      - traefik.http.middlewares.https_redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.https_redirect.redirectscheme.permanent=true
+      # Traefik dashboard
+      - traefik.http.routers.traefik.rule=Host(`traefik.partecipazione.azione.it`)
+      - traefik.http.routers.traefik.entrypoints=websecure
+      - traefik.http.routers.traefik.service=api@internal
+      - traefik.http.routers.traefik.tls.certresolver=le
+      - "traefik.http.middlewares.basic-auth.basicauth.users=admin:$$apr1$$jtkrgano$$SeKqInRVXEzuCp1MVM6y91"
+      - traefik.http.routers.traefik.middlewares=basic-auth
+    <<: *network
 
 volumes:
   pg:
@@ -119,7 +189,12 @@ volumes:
   decidim-gems:
   decidim-config:
   decidim-uploads:
-  nginx-letsencrypt:
+  grafana_lib:
+  prometheus_data:
+  prometheus_config:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
 
 networks:
   decidim:
